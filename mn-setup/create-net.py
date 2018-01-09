@@ -45,30 +45,16 @@ def startNet():
 	info("Testing network connectivity...\n")
 	net.pingAll()
 
-	# run `cd /home/` on each host
+	# run `cd /home/` on each host to navigate to private dirs on startup
         for host in net.hosts:
 		host.cmd('cd /home/')
-
-	# create dict to fill with hostnames and respective PIDs
-	#popens = {}
-	# run timer.sh process on first four hosts
-	#numActiveHosts = 4
-	#activeHosts = []
-	#for i in range(0,numActiveHosts):
-	#	activeHosts.append(net.get('h%d' % (i+1)))
-	#for host in activeHosts:
-	#	print "Starting timer.sh"
-	#	popens[host] = host.popen('/home/timer.sh')
-
-	# monitor hosts and print respective outputs
-	#for host, line in pmonitor(popens):
-	#	if host:
-	#		info("<%s>: %s" % (host.name, line))
 	
 	print "**********\nFinished setting up and testing.\n**********\n"
-	# CLI(net)
 	app = consoles.ConsoleApp(net, width=4)
 	app.mainloop()
+
+	# CLI(net)        #start CLI after user quits consoles
+
 	net.stop()
 
 if __name__ == '__main__':
