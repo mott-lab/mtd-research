@@ -30,6 +30,6 @@ Running this test bed assumes you have the following items installed on your loc
     * This script creates the network test-bed with 10 hosts and spawns virtual terminals to interact with every virtualized network device.
 
 2. That's it!  You can run commands in different terminals just by clicking in each of them.  Type `/timer.sh` on a few hosts to run the basic timer script.  It should print out its process ID and the current date and time every 3 seconds.
-  * Note: Each host has its own private directories, but they still have access to the same underlying VM.  For illustration, type `ps -a` on a host after starting `timer.sh` on a few others.  You will see every process running.
+    * Note: Each host has its own private directories, but they still have access to the same underlying VM.  For illustration, type `ps -a` on a host after starting `timer.sh` on a few others.  You will see every process running.
 
 To tear down the network, click the "Exit" button from the terminal app's top menu bar.
