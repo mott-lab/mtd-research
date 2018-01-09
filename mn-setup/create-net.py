@@ -20,9 +20,9 @@ class MTDNetwork(Topo):
 		for i in range(0,n):
 			# create private persistent dirs for each host at ./proj/<hostname>
 			# also create temporary dir at /var/mn on host
-			privateDirs = [ ('/var/log', '/home/mininet/mininet/proj/hostfiles/%(name)s/var/log'),
-					('/var/run', '/home/mininet/mininet/proj/hostfiles/%(name)s/var/run'),
-					('/home/', '/home/mininet/mininet/proj/hostfiles/%(name)s/'),
+			privateDirs = [ ('/var/log', './hostfiles/%(name)s/var/log'),
+					('/var/run', './hostfiles/%(name)s/var/run'),
+					('/home/', './hostfiles/%(name)s/'),
 					 '/var/mn' ]
 			hosts.append(self.addHost('h%d' % (i+1), privateDirs=privateDirs))
 			
@@ -35,8 +35,10 @@ def startNet():
 	topo = MTDNetwork()
 	info("Creating network...\n")
 	net = Mininet(topo=topo, controller=None)
-	info("Adding external controller with IP 10.0.2.2 on port 6653...\n")
-	c0 = net.addController('c0', controller=RemoteController, ip='10.0.2.2', port=6653)
+	ctlIP = sys.argv[1]
+	ctlPort = int(sys.argv[2])
+	info("Adding external controller with IP %s on port %d...\n" % (ctlIP, ctlPort))
+	c0 = net.addController('c0', controller=RemoteController, ip=ctlIP, port=ctlPort)
 	net.start()
 	info("Dumping host connections...\n")
 	dumpNodeConnections(net.hosts)

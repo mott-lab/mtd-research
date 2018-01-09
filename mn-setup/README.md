@@ -15,7 +15,7 @@ Running this test bed assumes you have the following items installed on your loc
 ### Test-bed Setup
 
 1. Log into the Mininet VM either from SSH or in the VM itself.  I find it easier to SSH, as I usually have a few terminals into the Mininet VM open at a time.  I set up my VM to enable port forwarding with the instructions given [here](https://github.com/mininet/openflow-tutorial/wiki/VirtualBox-specific-Instructions).  Then, I use the command below to SSH into the VM.
-  * `ssh -Y -l mininet -p2222 localhost`
+    * `ssh -Y -l mininet -p2222 localhost`
 
 2. Navigate into the `mininet` directory from the home directory (the home directory is also `mininet`).  Type `git clone https://github.com/mgottsacker34/mtd-research.git` to copy these files to your VM.
 
@@ -26,7 +26,8 @@ Running this test bed assumes you have the following items installed on your loc
 5. In the Mininet VM, run `sudo route -n`.  Note the IP address listed under the `Gateway` field for the entry with the `UG` flags shown.  This address is the one with which your VM communicates to your local computer and thus, the Floodlight controller.
 
 ## Running the Test-bed
-1. Type `sudo python create-net.py` from the `mn-setup` directory in the VM.  This script creates the network test-bed with 10 hosts and spawns virtual terminals to interact with every virtualized network device.
+1. Type `sudo python create-net.py <controller IP> <controller port>` from the `mn-setup` directory in the VM.  You obtained the controller's IP address in Step 5 of the Setup instructions.  For Floodlight, the controller's port is 6653. 
+    * This script creates the network test-bed with 10 hosts and spawns virtual terminals to interact with every virtualized network device.
 
 2. That's it!  You can run commands in different terminals just by clicking in each of them.  Type `/timer.sh` on a few hosts to run the basic timer script.  It should print out its process ID and the current date and time every 3 seconds.
   * Note: Each host has its own private directories, but they still have access to the same underlying VM.  For illustration, type `ps -a` on a host after starting `timer.sh` on a few others.  You will see every process running.
