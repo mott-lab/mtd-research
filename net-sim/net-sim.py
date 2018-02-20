@@ -2,10 +2,11 @@ import random
 import heapq
 import logging
 
+# network Node structure
 class Node:
     links = []
     ip_addr = '0.0.0.0'
-    name = 'h'
+    name = 'h' # name is not used yet, but could be useful to simulate DNS migration
 
     def __init__(self, name, ip_addr):
         self.ip_addr = ip_addr
@@ -23,14 +24,16 @@ class Node:
     def set_name(self, name):
         self.name = name
 
+# event structure
 class Event:
     start_time = 0
-    payload = 'normal'
+    payload = 'normal' # other value will be 'evil'
 
     def __init__(self, start_time, payload):
         self.start_time = start_time
         self.payload = payload
 
+# create network nodes and return a list of them
 def initState():
     nodes = []
 
@@ -54,6 +57,7 @@ def initState():
 
     return nodes
 
+# create event queue and return it as a heap queue
 def initSchedule():
     schedule = []
     for i in range(0,100):
@@ -66,18 +70,19 @@ def initSchedule():
     return schedule
 
 def main():
-    logger = logging.getLogger(__name__)
-    ch = logging.StreamHandler()
+    logger = logging.getLogger('net-sim')
+    ch = logging.StreamHandler()    # handler for console output
     logger.addHandler(ch)
     logger.setLevel(logging.INFO)
+
     # start section
     end = False
     states = initState()
     schedule = initSchedule()
     time = 0
-    random.seed(a=1)
-    log = {}    # use log to record changes
     stop_time = len(schedule)
+
+    random.seed(a=1)
 
     logger.info('INITIAL STATE INFO: ')
     for node in states:
@@ -85,7 +90,9 @@ def main():
 
     # loop section
     while end is False:
-        event = schedule[0]
+
+        event = schedule[0] # top of schedule heap
+
         if event.payload == 'evil':
             # logic to select host to migrate goes here; right now: random
             h = random.randint(0,4)
@@ -97,15 +104,15 @@ def main():
                 if i < 3:
                     new_ip += '.'
 
-            states[h].set_ip(new_ip)
+            states[h].set_ip(new_ip) # make the IP address migration
             log_msg = 'AT T=' + str(event.start_time) + ': ' 'Node ' + str(h) + ' IP address set to: ' + new_ip
             logger.warn(log_msg) # separate log_msg for now b/c maybe output it to a file or somewhere else
 
-        prev_time = heapq.heappop(schedule).start_time
+        prev_time = heapq.heappop(schedule).start_time # pop current event
         if prev_time == stop_time-1:
             end = True
         else:
-            next_time = schedule[0].start_time
+            next_time = schedule[0].start_time # load next event
             logger.debug('Set next_time to ' + str(next_time))
 
     # end section
